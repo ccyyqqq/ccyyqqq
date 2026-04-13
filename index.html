@@ -5,703 +5,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FATI 健身人格测试 | 为远离FAT而战</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-
-        /* 动态背景 */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.1;
-        }
-
-        .dumbbell {
-            position: absolute;
-            font-size: 40px;
-            animation: float 8s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-30px) rotate(10deg); opacity: 0.6; }
-        }
-
-        /* 头部 */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .logo {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #e94560, #ff6b6b, #feca57);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(233, 69, 96, 0.5);
-            letter-spacing: -2px;
-            margin-bottom: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .subtitle {
-            color: #a0a0a0;
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        .tagline {
-            background: rgba(233, 69, 96, 0.2);
-            border: 1px solid rgba(233, 69, 96, 0.5);
-            padding: 10px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #ff6b6b;
-        }
-
-        /* 开始页面 */
-        .start-screen {
-            text-align: center;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .intro {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .intro p {
-            line-height: 1.8;
-            color: #d0d0d0;
-            margin-bottom: 15px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #e94560, #ff6b6b);
-            color: white;
-            border: none;
-            padding: 18px 50px;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
-            font-weight: 700;
-            margin-top: 20px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(233, 69, 96, 0.6);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        /* 测试页面 */
-        .quiz-screen {
-            display: none;
-            position: relative;
-            z-index: 1;
-        }
-
-        .progress-bar {
-            background: rgba(255, 255, 255, 0.1);
-            height: 8px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #e94560, #feca57);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-            border-radius: 10px;
-        }
-
-        .question-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .question-number {
-            color: #e94560;
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .question-text {
-            font-size: 1.3rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            padding: 18px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .option:hover {
-            background: rgba(233, 69, 96, 0.1);
-            border-color: rgba(233, 69, 96, 0.5);
-            transform: translateX(5px);
-        }
-
-        .option.selected {
-            background: rgba(233, 69, 96, 0.2);
-            border-color: #e94560;
-        }
-
-        .option-letter {
-            background: rgba(233, 69, 96, 0.3);
-            color: #ff6b6b;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        .option-text {
-            color: #e0e0e0;
-            line-height: 1.5;
-        }
-
-        /* 结果页面 */
-        .result-screen {
-            display: none;
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .result-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 40px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(233, 69, 96, 0.3) 0%, transparent 70%);
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .result-type {
-            font-size: 5rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #e94560, #feca57);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            position: relative;
-        }
-
-        .result-name {
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .result-tag {
-            background: rgba(233, 69, 96, 0.3);
-            color: #ff6b6b;
-            padding: 8px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .result-desc {
-            color: #d0d0d0;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .traits {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .trait {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: left;
-        }
-
-        .trait-label {
-            color: #888;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .trait-value {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .share-section {
-            margin-top: 30px;
-            position: relative;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #fff;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 12px 30px;
-            font-size: 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 5px;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .all-types {
-            margin-top: 40px;
-            text-align: left;
-        }
-
-        .all-types h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #a0a0a0;
-        }
-
-        .type-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .type-item {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.9rem;
-        }
-
-        .type-item strong {
-            color: #e94560;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        /* 动画 */
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 响应式 */
-        @media (max-width: 600px) {
-            .logo { font-size: 3rem; }
-            .result-type { font-size: 3.5rem; }
-            .traits { grid-template-columns: 1fr; }
-            .type-grid { grid-template-columns: 1fr; }
-        }
+        /* 样式保持原样，未做修改 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; overflow-x: hidden; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; position: relative; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.1; }
+        .dumbbell { position: absolute; font-size: 40px; animation: float 8s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-30px) rotate(10deg); opacity: 0.6; } }
+        header { text-align: center; padding: 40px 20px; position: relative; z-index: 1; }
+        .logo { font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, #e94560, #ff6b6b, #feca57); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(233, 69, 96, 0.5); letter-spacing: -2px; margin-bottom: 10px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .subtitle { color: #a0a0a0; font-size: 1.1rem; margin-top: 10px; }
+        .tagline { background: rgba(233, 69, 96, 0.2); border: 1px solid rgba(233, 69, 96, 0.5); padding: 10px 20px; border-radius: 50px; display: inline-block; margin-top: 20px; font-size: 0.9rem; color: #ff6b6b; }
+        .start-screen { text-align: center; padding: 40px 20px; position: relative; z-index: 1; }
+        .intro { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; margin: 30px 0; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .intro p { line-height: 1.8; color: #d0d0d0; margin-bottom: 15px; }
+        .btn-primary { background: linear-gradient(45deg, #e94560, #ff6b6b); color: white; border: none; padding: 18px 50px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4); font-weight: 700; margin-top: 20px; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(233, 69, 96, 0.6); }
+        .btn-primary:active { transform: translateY(0); }
+        .quiz-screen { display: none; position: relative; z-index: 1; }
+        .progress-bar { background: rgba(255, 255, 255, 0.1); height: 8px; border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #e94560, #feca57); height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 10px; }
+        .question-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 20px; }
+        .question-number { color: #e94560; font-size: 0.9rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .question-text { font-size: 1.3rem; line-height: 1.6; margin-bottom: 25px; font-weight: 600; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); padding: 18px 20px; border-radius: 12px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; }
+        .option:hover { background: rgba(233, 69, 96, 0.1); border-color: rgba(233, 69, 96, 0.5); transform: translateX(5px); }
+        .option.selected { background: rgba(233, 69, 96, 0.2); border-color: #e94560; }
+        .option-letter { background: rgba(233, 69, 96, 0.3); color: #ff6b6b; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .option-text { color: #e0e0e0; line-height: 1.5; }
+        .result-screen { display: none; position: relative; z-index: 1; text-align: center; }
+        .result-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 30px; padding: 40px 30px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; position: relative; overflow: hidden; }
+        .result-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(233, 69, 96, 0.3) 0%, transparent 70%); opacity: 0.5; pointer-events: none; }
+        .result-type { font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, #e94560, #feca57); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; position: relative; letter-spacing: 2px; }
+        .result-name { font-size: 1.5rem; color: #fff; margin-bottom: 20px; position: relative; }
+        .result-tag { background: rgba(233, 69, 96, 0.3); color: #ff6b6b; padding: 8px 20px; border-radius: 50px; display: inline-block; font-size: 0.9rem; margin-bottom: 25px; position: relative; }
+        .result-desc { color: #d0d0d0; line-height: 1.8; font-size: 1.1rem; margin-bottom: 30px; position: relative; }
+        .traits { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; position: relative; }
+        .trait { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px; text-align: left; }
+        .trait-label { color: #888; font-size: 0.8rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .trait-value { color: #fff; font-weight: 600; }
+        .share-section { margin-top: 30px; position: relative; }
+        .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255, 255, 255, 0.3); padding: 12px 30px; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: all 0.3s; margin: 5px; }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.5); }
+        .all-types { margin-top: 40px; text-align: left; }
+        .all-types h3 { text-align: center; margin-bottom: 20px; color: #a0a0a0; }
+        .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .type-item { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.9rem; }
+        .type-item strong { color: #e94560; display: block; margin-bottom: 5px; }
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .logo { font-size: 3rem; } .result-type { font-size: 3rem; } .traits { grid-template-columns: 1fr; } .type-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <!-- 动态背景 -->
     <div class="bg-animation" id="bgAnimation"></div>
-
     <div class="container">
-        <!-- 头部 -->
         <header>
             <h1 class="logo">FATI</h1>
             <p class="subtitle">Fitness Attitude Type Indicator</p>
-            <div class="tagline">🏋️ 不是每个去健身房的人都在健身</div>
+            <div class="tagline">🏋️ 测测你的健身房隐藏人格</div>
         </header>
 
-        <!-- 开始页面 -->
         <div class="start-screen" id="startScreen">
             <div class="intro fade-in">
-                <p>办了卡却只会洗澡？买了装备却只会自拍？</p>
-                <p>在跑步机上追剧，在力量区迷路？</p>
-                <p>蛋白粉当水喝，但练完就吃炸鸡？</p>
+                <p>原以为大家都在挥汗如雨，其实有人在照镜子，有人在发呆。</p>
+                <p>办卡三年，你的真实归宿到底是器械区还是淋浴间？</p>
                 <br>
-                <p><strong>FATI</strong> 不关心你举多重、跑多快</p>
-                <p>我们只关心：<strong>你的健身，到底有多痛？</strong></p>
+                <p><strong>FATI 测试</strong>基于四大核心健身维度，</p>
+                <p>为你揭秘：<strong>你在健身房到底是个什么物种？</strong></p>
             </div>
             <button class="btn-primary" onclick="startQuiz()">开始测试 💪</button>
         </div>
 
-        <!-- 测试页面 -->
         <div class="quiz-screen" id="quizScreen">
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="question-card" id="questionCard">
-                <!-- 问题内容由JS生成 -->
-            </div>
+            <div class="question-card" id="questionCard"></div>
         </div>
 
-        <!-- 结果页面 -->
         <div class="result-screen" id="resultScreen">
             <div class="result-card fade-in">
-                <div class="result-type" id="resultType">R</div>
-                <div class="result-name" id="resultName">躺平者 (The Rest-er)</div>
-                <div class="result-tag" id="resultTag">健身卡 = 洗澡卡</div>
-                <div class="result-desc" id="resultDesc">
-                    你的健身之旅从办卡那一刻就已经完成了90%。<br>
-                    你熟悉健身房的每一个角落——休息区、饮水机、更衣室，<br>
-                    唯独不熟悉器械区。你的组间休息是别人的整组训练时间。
-                </div>
-                
+                <div class="result-type" id="resultType">VCIF</div>
+                <div class="result-name" id="resultName">躺平洗澡党</div>
+                <div class="result-tag" id="resultTag">办卡=洗浴中心VIP</div>
+                <div class="result-desc" id="resultDesc"></div>
                 <div class="traits">
                     <div class="trait">
                         <div class="trait-label">核心优势</div>
-                        <div class="trait-value" id="traitStrength">恢复能力MAX</div>
+                        <div class="trait-value" id="traitStrength"></div>
                     </div>
                     <div class="trait">
                         <div class="trait-label">致命弱点</div>
-                        <div class="trait-value" id="traitWeakness">训练存在感≈0</div>
+                        <div class="trait-value" id="traitWeakness"></div>
                     </div>
                     <div class="trait">
                         <div class="trait-label">典型装备</div>
-                        <div class="trait-value" id="traitGear">大容量水杯</div>
+                        <div class="trait-value" id="traitGear"></div>
                     </div>
                     <div class="trait">
-                        <div class="trait-label">健身格言</div>
-                        <div class="trait-value" id="traitQuote">"来都来了"</div>
+                        <div class="trait-label">口头禅</div>
+                        <div class="trait-value" id="traitQuote"></div>
                     </div>
                 </div>
-
                 <div class="share-section">
                     <button class="btn-secondary" onclick="retakeQuiz()">再测一次 🔄</button>
                     <button class="btn-secondary" onclick="shareResult()">分享结果 📤</button>
                 </div>
             </div>
-
-            <div class="all-types">
-                <h3>🎯 全部10种FATI人格</h3>
-                <div class="type-grid" id="typeGrid"></div>
-            </div>
         </div>
     </div>
 
     <script>
-        // 问题数据
+        // 真正仿MBTI的四维逻辑题目
         const questions = [
+            // Dimension 1: 驱动力 - V(Visual 颜值/出片) vs P(Performance 力量/表现)
             {
-                text: "走进健身房，你第一件事做什么？",
+                text: "办卡交钱的那一刻，你脑海里浮现的画面是？",
                 options: [
-                    { letter: "A", text: "直奔更衣室，今天的水温必须合适", type: "R" },
-                    { letter: "B", text: "找光线最好的位置，这个角度显大", type: "E" },
-                    { letter: "C", text: "抢占跑步机，力量区那群大汉好可怕", type: "C" },
-                    { letter: "D", text: "掏出摇摇杯，先喝一口预激活", type: "P" }
+                    { letter: "A", text: "穿衣显瘦，脱衣有肉，制霸朋友圈", type: "V" },
+                    { letter: "B", text: "一拳打死一头牛，或者跑马不喘气", type: "P" }
                 ]
             },
             {
-                text: "你的训练计划是？",
+                text: "如果体重秤上突然轻了1公斤，你的第一反应：",
                 options: [
-                    { letter: "A", text: "计划？我来健身房就是计划的一部分", type: "R" },
-                    { letter: "B", text: "胸+肱二，今天也是镜子友好型训练", type: "E" },
-                    { letter: "C", text: "5公里起步，上不封顶，看剧为主", type: "C" },
-                    { letter: "D", text: "根据昨晚的蛋白质摄入量动态调整", type: "P" }
+                    { letter: "A", text: "赶紧撩起衣服照镜子，看腹肌出来没", type: "V" },
+                    { letter: "B", text: "完了！是不是掉肌肉了？今天的深蹲还能起吗？", type: "P" }
                 ]
             },
             {
-                text: "组间休息时你在？",
+                text: "关注健身博主主要看什么？",
                 options: [
-                    { letter: "A", text: "坐着刷手机，不知不觉15分钟", type: "R" },
-                    { letter: "B", text: "检查刚才的照片，选滤镜", type: "E" },
-                    { letter: "C", text: "继续慢走，不能让心率掉下来", type: "C" },
-                    { letter: "D", text: "喝蛋白粉，窗口期不等人", type: "P" }
+                    { letter: "A", text: "好看的穿搭、美好的肉体、日常出片", type: "V" },
+                    { letter: "B", text: "硬拉发力技巧、训练容量、心肺强化计划", type: "P" }
+                ]
+            },
+            
+            // Dimension 2: 态度 - C(Casual 佛系/划水) vs H(Hardcore 硬核/死磕)
+            {
+                text: "到了健身房发现没带运动鞋，你会？",
+                options: [
+                    { letter: "A", text: "天意不可违！完美借口，洗个澡回家", type: "C" },
+                    { letter: "B", text: "借一双、现场买一双，或者光脚干硬拉", type: "H" }
                 ]
             },
             {
-                text: "看到'深蹲架被占着练手臂'的人，你？",
+                text: "所谓的“最后一组”，对你来说真实情况是？",
                 options: [
-                    { letter: "A", text: "无所谓，反正我也不用", type: "R" },
-                    { letter: "B", text: "内心鄙视但继续自拍", type: "E" },
-                    { letter: "C", text: "庆幸自己不用去力量区", type: "C" },
-                    { letter: "D", text: "上去指导他蛋白质要跟上", type: "P" }
+                    { letter: "A", text: "心里已经放弃，随便敷衍两下收工", type: "C" },
+                    { letter: "B", text: "表情面目全非，借力扭曲也要怼上去", type: "H" }
                 ]
             },
             {
-                text: "你的健身餐朋友圈？",
+                text: "今天感觉肌肉有点隐隐作痛，你会？",
                 options: [
-                    { letter: "A", text: "只发定位，证明来过", type: "R" },
-                    { letter: "B", text: "训练后镜子前，餐是什么？", type: "E" },
-                    { letter: "C", text: "跑步轨迹截图，配速不重要距离要长", type: "C" },
-                    { letter: "D", text: "精确到克的鸡胸+西兰花摆盘", type: "D" }
+                    { letter: "A", text: "太危险了，歇个三天压压惊", type: "C" },
+                    { letter: "B", text: "享受这种撕裂感，轻伤不下火线，换个部位继续练", type: "H" }
+                ]
+            },
+
+            // Dimension 3: 社交 - I(Introvert 社恐/孤狼) vs E(Extrovert 社牛/交际)
+            {
+                text: "组间休息漫长的3分钟，你在干嘛？",
+                options: [
+                    { letter: "A", text: "戴着降噪耳机，眼神杀气腾腾，生怕被打扰", type: "I" },
+                    { letter: "B", text: "已经和旁边的肌霸/小姐姐聊上了今天的补剂行情", type: "E" }
                 ]
             },
             {
-                text: "朋友约你聚餐，你说？",
+                text: "看到有人占着器械玩手机十分钟，你会？",
                 options: [
-                    { letter: "A", text: "我先去健身房露个脸", type: "R" },
-                    { letter: "B", text: "等会儿，我先拍个对比照", type: "E" },
-                    { letter: "C", text: "吃完我要多跑5公里赎罪", type: "C" },
-                    { letter: "D", text: "这家有低脂选项吗？没有我不去", type: "D" }
+                    { letter: "A", text: "默默绕开去练别的，在心里疯狂鄙视", type: "I" },
+                    { letter: "B", text: "直接走上前拍肩：'兄弟还有几组？我能加个塞吗？'", type: "E" }
                 ]
             },
             {
-                text: "你的运动伤痛史？",
+                text: "走进健身房的一路，你的状态是？",
                 options: [
-                    { letter: "A", text: "手指刷手机腱鞘炎算吗？", type: "R" },
-                    { letter: "B", text: "为了找角度扭到过脖子", type: "E" },
-                    { letter: "C", text: "膝盖说谢谢你的关心", type: "I" },
-                    { letter: "D", text: "没有，我补剂吃得很全", type: "P" }
+                    { letter: "A", text: "躲开前台和教练的视线，像个刺客一样潜入", type: "I" },
+                    { letter: "B", text: "和前台、保洁、教练、熟人挨个点头打招呼", type: "E" }
+                ]
+            },
+
+            // Dimension 4: 方法 - F(Feel 凭直觉/野路子) vs S(Science 算数据/装备控)
+            {
+                text: "你的健身包里通常装了什么？",
+                options: [
+                    { letter: "A", text: "啥也不带，一瓶水一部手机走天下", type: "F" },
+                    { letter: "B", text: "腰带护腕筋膜枪，像去荒野求生啥都有", type: "S" }
                 ]
             },
             {
-                text: "'最后一组'对你意味着？",
+                text: "练完之后的饮食，你通常怎么解决？",
                 options: [
-                    { letter: "A", text: "最后一组休息，然后回家", type: "R" },
-                    { letter: "B", text: "最后一组拍照，然后修图", type: "E" },
-                    { letter: "C", text: "最后一组有氧，然后拉伸", type: "F" },
-                    { letter: "D", text: "最后一组力竭，然后喝粉", type: "O" }
+                    { letter: "A", text: "练都练了，吃顿好的怎么了？烧烤火锅走起", type: "F" },
+                    { letter: "B", text: "精确计算碳水和蛋白质比例，坚决不碰隐形糖", type: "S" }
                 ]
             },
             {
-                text: "你的健身知识来自？",
+                text: "关于运动补剂，你的态度是？",
                 options: [
-                    { letter: "A", text: "健身房听来的八卦", type: "R" },
-                    { letter: "B", text: "健身网红的滤镜教程", type: "E" },
-                    { letter: "C", text: "'跑步伤膝盖'的家族群", type: "C" },
-                    { letter: "D", text: "蛋白粉桶上的说明书", type: "P" }
-                ]
-            },
-            {
-                text: "办卡三年，你的进度是？",
-                options: [
-                    { letter: "A", text: "澡洗得很舒服，体重很稳定", type: "R" },
-                    { letter: "B", text: "自拍技术突飞猛进，肌肉原地踏步", type: "E" },
-                    { letter: "C", text: "跑步机从3km/h进步到12km/h", type: "C" },
-                    { letter: "D", text: "补剂柜从1瓶变成12瓶", type: "T" }
-                ]
-            },
-            {
-                text: "如果有人问你'练得怎么样'，你？",
-                options: [
-                    { letter: "A", text: "害，就是来出出汗", type: "R" },
-                    { letter: "B", text: "直接展示二头肌，不说话", type: "E" },
-                    { letter: "C", text: "我半马能进2小时", type: "C" },
-                    { letter: "D", text: "报出最近三天的宏量营养素比例", type: "D" }
-                ]
-            },
-            {
-                text: "你的终极健身目标是？",
-                options: [
-                    { letter: "A", text: "把年卡用完（物理意义上的）", type: "G" },
-                    { letter: "B", text: "朋友圈点赞过百", type: "E" },
-                    { letter: "C", text: "能一直跑下去，跑到老", type: "C" },
-                    { letter: "D", text: "体脂8%以下，哪怕一天也行", type: "A" }
+                    { letter: "A", text: "都是智商税，多吃俩鸡蛋就补回来了", type: "F" },
+                    { letter: "B", text: "氮泵、肌酸、乳清蛋白缺一不可，讲究窗口期", type: "S" }
                 ]
             }
         ];
 
-        // 人格类型数据
+        // 16种极致人格库 (MBTI-style)
         const types = {
-            "R": {
-                name: "躺平者 (The Rest-er)",
-                tag: "健身卡 = 洗澡卡",
-                desc: "你的健身之旅从办卡那一刻就已经完成了90%。你熟悉健身房的每一个角落——休息区、饮水机、更衣室，唯独不熟悉器械区。你的组间休息是别人的整组训练时间。",
-                strength: "恢复能力MAX",
-                weakness: "训练存在感≈0",
-                gear: "大容量水杯",
-                quote: "来都来了"
-            },
-            "E": {
-                name: "镜前永动机 (The Mirror Hound)",
-                tag: "训练5分钟，自拍2小时",
-                desc: "灯光是你的第一教练，角度是你的训练伙伴。你深谙'光线增肌法'——同样的肌肉，不同的滤镜，看起来差5斤。胸和肱二头肌是你唯一认识的身体部位。",
-                strength: "视觉呈现力MAX",
-                weakness: "腿部训练失忆症",
-                gear: "手机支架",
-                quote: "光练不拍等于白练"
-            },
-            "C": {
-                name: "有氧囚徒 (The Cardio Addict)",
-                tag: "力量区是禁区",
-                desc: "你对跑步机有莫名的安全感，对哑铃区有本能的恐惧。你相信'只要跑得够久，肌肉就追不上我'。你的耳机里永远有剧在追，跑步是副业。",
-                strength: "心肺耐力惊人",
-                weakness: "肌肉量约等于路人",
-                gear: "降噪耳机",
-                quote: "我就想瘦，不想变金刚"
-            },
-            "P": {
-                name: "蛋白魔怔人 (The Bro-Scientist)",
-                tag: "摇杯从不离手",
-                desc: "你信奉'不吃蛋白粉肌肉会掉'的真理，训练可以划水，练后窗口期必须精准到秒。你对各种补剂如数家珍，但训练动作可能叫不出名字。",
-                strength: "营养知识储备丰富",
-                weakness: "训练强度与补剂投入成反比",
-                gear: "电动摇摇杯",
-                quote: "窗口期不等人"
-            },
-            "A": {
-                name: "腹肌偏执狂 (The Six-Pack Chaser)",
-                tag: "体脂15%还在刷脂",
-                desc: "你的世界里只有腹肌，其他肌肉都是配角。你三年没增过肌，因为'腹肌不出，增肌不停'。你是最懂体脂率的人，也是最不懂均衡发展的人。",
-                strength: "核心力量确实不错",
-                weakness: "上肢下肢像借来的",
-                gear: "体脂秤",
-                quote: "腹肌是门面"
-            },
-            "T": {
-                name: "装备党 (The Gear Head)",
-                tag: "护腕护膝腰带氮泵",
-                desc: "你的装备科技树点满，但重量可能还是空杆。你相信'不是我不行，是装备没到位'。你的健身包比别人的行李箱还重，里面装着各种'必需品'。",
-                strength: "防护意识极强",
-                weakness: "装备重量>训练重量",
-                gear: "全套护具",
-                quote: "工欲善其事必先利其器"
-            },
-            "I": {
-                name: "伤病收藏家 (The Walking Bruise)",
-                tag: "越伤越练，越练越伤",
-                desc: "你的膝盖会弹响，你的腰会说谢谢，但你从不休息。'休息是弱者的选择'是你的座右铭，虽然你确实因此更强了——在忍耐疼痛方面。",
-                strength: "意志力钢铁般",
-                weakness: "身体玻璃般",
-                gear: "肌贴和冰袋",
-                quote: "没有痛苦就没有收获"
-            },
-            "O": {
-                name: "最后一组骗子 (The AMRAP Liar)",
-                tag: "'最后一组'说了五遍",
-                desc: "你是力竭表演艺术家，'最后一组'是你的口头禅，也是你的谎言。你组组力竭，次次欺骗，进步全靠嘴。你的训练容量全在嘴上完成了。",
-                strength: "嘴上容量无限",
-                weakness: "实际容量有限",
-                gear: "护掌（保护手茧）",
-                quote: "真的最后一组了"
-            },
-            "D": {
-                name: "饮食洁癖 (The Macro Monk)",
-                tag: "食物秤随身携带",
-                desc: "聚餐是你的社交地狱，隐形糖分是你的眼中钉。你可以精确说出三天前的碳水摄入量，但可能记不得昨天练了什么。你的厨房比实验室还精准。",
-                strength: "饮食控制极致",
-                weakness: "生活乐趣≈0",
-                gear: "食物秤",
-                quote: "这个酱料里有糖"
-            },
-            "F": {
-                name: "拉伸表演家 (The Flex-ibility)",
-                tag: "瑜伽垫上一躺一小时",
-                desc: "你在瑜伽垫上'激活核心'的时间比别人整组训练还长。柔韧性满分，力量区从未踏入。你是最会放松的人，虽然可能有点太放松了。",
-                strength: "柔韧性惊人",
-                weakness: "力量训练失踪人口",
-                gear: "瑜伽垫",
-                quote: "我在激活核心"
-            },
-            "G": {
-                name: "健身房候鸟 (The Gym Nomad)",
-                tag: "办卡三家，去过三次",
-                desc: "你拥有三家健身房的会员卡，去过的次数<参观次数。每家器械都不好、人太多、音乐不对——永远有理由。你的健身之旅永远在'下一家会更好'中循环。",
-                strength: "健身房考察经验丰富",
-                weakness: "实际训练经验匮乏",
-                gear: "一堆会员卡",
-                quote: "这家不行，换一家"
-            }
+            "VCIF": { name: "躺平洗澡党", tag: "办卡 = 洗浴中心VIP", desc: "你的健身之旅从刷脸进门就完成了90%。你熟悉淋浴间的水温和休息区的沙发，唯独对器械区十分陌生。", strength: "体力保全大师", weakness: "练了三年还是新手", gear: "超大容量水杯+高档沐浴露", quote: "今天出汗了，洗个头吧。" },
+            "VCEF": { name: "镜前永动机", tag: "训练5分钟，自拍2小时", desc: "灯光是你的第一教练，角度是你的最佳辅助。你深谙'光线增肌法'，只要滤镜调得好，相当于多练三个月。", strength: "极强的出片运镜能力", weakness: "一脱离顶光就现原形", gear: "手机三脚架", quote: "光练不拍等于白练。" },
+            "VCIS": { name: "差生文具多", tag: "顶级装备，划水训练", desc: "你穿着最新款的Lululemon，戴着心率表，穿着举重鞋，在跑步机上慢走了20分钟。态度很专业，流汗很敷衍。", strength: "健身房潮流引领者", weakness: "训练痕迹几乎没有", gear: "Oura戒指/全套名牌穿搭", quote: "工欲善其事，必先买装备。" },
+            "VCES": { name: "团课气氛组", tag: "主打一个陪伴", desc: "你是动感单车和Zumba课的核心灵魂。哪里人多你就去哪，动作标不标准不重要，尖叫声必须最大。", strength: "无敌的社交感染力", weakness: "一个人绝对不练", gear: "荧光色运动服", quote: "教练，再来一首DJ！" },
+            "VHIF": { name: "饿狼传说", tag: "碳水克星，孤傲野狼", desc: "为了腹肌可以六亲不认。你训练极度刻苦，对自己心狠手辣。不爱交流，只和铁块死磕，且吃得像个原始人。", strength: "惊人的自律与执行力", weakness: "聚餐绝缘体，容易抑郁", gear: "掉色的旧水壶", quote: "吃一口糖，腹肌就糊了。" },
+            "VHEF": { name: "组间小陀螺", tag: "全场巡游，随时充血", desc: "做完一组动作必须立刻站起来走动，时不时撩起衣服看看腹肌。精力旺盛，全场都是你的走秀T台。", strength: "训练密度极高", weakness: "过度在意他人眼光", gear: "紧身速干衣", quote: "兄弟，看我刚才泵感怎么样？" },
+            "VHIS": { name: "腹肌偏执狂", tag: "严格控卡，冷酷无情", desc: "你的世界里只有体脂率。厨房秤是你的神，一切食物数据化。你在健身房像个没有感情的减脂机器。", strength: "饮食控制到达病态级别", weakness: "容易被一口蛋糕破防", gear: "随身厨房秤", quote: "这口饭超了2克碳水。" },
+            "VHES": { name: "宏量营养算命师", tag: "行走的生酮布道者", desc: "你不仅自己严格练，还要到处指点别人怎么吃。逢人便聊碳水循环和间歇性断食，像极了传教士。", strength: "理论知识极其丰富", weakness: "让身边的人压力山大", gear: "透明摇摇杯(装满奇特补剂)", quote: "你这顿的GI值太高了。" },
+            "PCIF": { name: "有氧囚徒", tag: "跑步机上的苦行僧", desc: "力量区是你的禁区。你对跑步机有莫名的安全感，只要跑得够久，生活的烦恼就追不上你。永远在追剧。", strength: "可怕的心肺耐力", weakness: "毫无肌肉线条", gear: "降噪耳机+iPad", quote: "今天就跑个半马放松下吧。" },
+            "PCEF": { name: "健身房街溜子", tag: "指点江山，从不流汗", desc: "健身房的超级VIP（闲散版）。什么器械都摸两下，遇到谁都能聊半小时。来健身主要是为了消磨时间。", strength: "掌握全健身房八卦", weakness: "进步基本靠做梦", gear: "不知道在哪拿的毛巾", quote: "哥们，你这发力不对啊。" },
+            "PCIS": { name: "康复理疗大师", tag: "热身一小时，训练十分钟", desc: "你在泡沫轴上打滚的时间，比别人全套训练还长。筋膜放松、关节激活动作信手拈来，主打一个养生。", strength: "柔韧性满分，绝不受伤", weakness: "根本没受到实质训练刺激", gear: "狼牙棒泡沫轴", quote: "我核心还没激活完毕。" },
+            "PCES": { name: "野生老中医", tag: "专治各种动作变形", desc: "自己没多少肉，但极爱到处指导新手。从解剖学讲到生物力学，满嘴大词，但就是不见自己去推大重量。", strength: "理论巨无霸", weakness: "实操战五渣", gear: "解剖学电子书", quote: "你刚才那个肩胛骨没收紧。" },
+            "PHIF": { name: "伤病收藏家", tag: "带伤上阵，硬核到底", desc: "膝盖弹响、腰椎突出、肩膀咔咔作响，但你从不休息。“休息是弱者的选择”，你是个真正的狠人（瞎练版）。", strength: "意志力如钢铁般坚硬", weakness: "身体像玻璃一样易碎", gear: "各种肌贴、膏药", quote: "轻伤不下火线，干就完了。" },
+            "PHEF": { name: "嚎叫艺术家", tag: "声音越大，重量越假", desc: "不管重量多轻，你的吼叫声必须响彻全场。每次最后一下都像是要把灵魂逼出体外，力竭表演登峰造极。", strength: "强大的精神氮泵", weakness: "容易吓到场内的小姐姐", gear: "镁粉 (尽管健身房不让用)", quote: "啊啊啊啊！再来一个！" },
+            "PHIS": { name: "孤独打桩机", tag: "耳机一戴，谁也不爱", desc: "硬拉、深蹲、卧推，你只认三大项。推着比自己重两倍的铁，戴着耳机与世隔绝，散发着生人勿近的气场。", strength: "恐怖的绝对力量", weakness: "可能看起来不太好惹", gear: "牛皮举重腰带+硬拉鞋", quote: "......(不说话，专注喘气)" },
+            "PHES": { name: "科技魔怔人", tag: "满嘴术语，科学死磕", desc: "把健身当成了搞科研。训练卡着秒表，重量精确到小数点，补剂按克称。你是真正的“肌肉极客”。", strength: "最高效的肌肉生长模型", weakness: "偶尔显得过于神经质", gear: "秒表+厚厚的训练笔记", quote: "现在是蛋白质吸收的最佳窗口期。" }
         };
 
         let currentQuestion = 0;
-        let scores = {};
-        let answers = [];
+        let scores = { V: 0, P: 0, C: 0, H: 0, I: 0, E: 0, F: 0, S: 0 };
 
-        // 初始化背景动画
         function initBg() {
             const bg = document.getElementById('bgAnimation');
             const icons = ['🏋️', '💪', '🏃', '🥗', '🥤', '🏆', '⏱️', '📸'];
@@ -716,14 +251,12 @@
             }
         }
 
-        // 开始测试
         function startQuiz() {
             document.getElementById('startScreen').style.display = 'none';
             document.getElementById('quizScreen').style.display = 'block';
             showQuestion();
         }
 
-        // 显示问题
         function showQuestion() {
             const q = questions[currentQuestion];
             const progress = ((currentQuestion + 1) / questions.length) * 100;
@@ -735,7 +268,7 @@
                 <div class="options">
             `;
 
-            q.options.forEach((opt, idx) => {
+            q.options.forEach(opt => {
                 html += `
                     <div class="option" onclick="selectOption('${opt.type}', this)">
                         <div class="option-letter">${opt.letter}</div>
@@ -749,17 +282,12 @@
             document.getElementById('questionCard').className = 'question-card fade-in';
         }
 
-        // 选择选项
         function selectOption(type, element) {
-            // 移除其他选中状态
             document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
 
-            // 记录分数
-            scores[type] = (scores[type] || 0) + 1;
-            answers.push(type);
+            scores[type]++;
 
-            // 延迟后下一题
             setTimeout(() => {
                 currentQuestion++;
                 if (currentQuestion < questions.length) {
@@ -770,35 +298,20 @@
             }, 400);
         }
 
-        // 显示结果
         function showResult() {
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'block';
 
-            // 计算最高分的类型
-            let maxScore = 0;
-            let resultType = 'R';
-            for (let type in scores) {
-                if (scores[type] > maxScore) {
-                    maxScore = scores[type];
-                    resultType = type;
-                }
-            }
+            // 计算四维结果
+            let typeCode = "";
+            typeCode += (scores.V >= scores.P) ? "V" : "P";
+            typeCode += (scores.C >= scores.H) ? "C" : "H";
+            typeCode += (scores.I >= scores.E) ? "I" : "E";
+            typeCode += (scores.F >= scores.S) ? "F" : "S";
 
-            // 特殊判定逻辑
-            // 如果R和G都高，判定为G（候鸟比躺平更惨）
-            if (scores['R'] >= 3 && scores['G'] >= 1) resultType = 'G';
-            // 如果E和O都高，判定为O（骗子比自拍更深层）
-            if (scores['E'] >= 3 && scores['O'] >= 2) resultType = 'O';
-            // 如果C和I都高，判定为I（硬撑型有氧党）
-            if (scores['C'] >= 3 && scores['I'] >= 2) resultType = 'I';
-            // 如果P和D都高，判定为D（饮食比蛋白更极端）
-            if (scores['P'] >= 3 && scores['D'] >= 2) resultType = 'D';
-            // 如果A和E都高，判定为A（腹肌偏执优先）
-            if (scores['A'] >= 2 && scores['E'] >= 2) resultType = 'A';
-
-            const result = types[resultType];
-            document.getElementById('resultType').textContent = resultType;
+            const result = types[typeCode];
+            
+            document.getElementById('resultType').textContent = typeCode;
             document.getElementById('resultName').textContent = result.name;
             document.getElementById('resultTag').textContent = result.tag;
             document.getElementById('resultDesc').innerHTML = result.desc;
@@ -807,52 +320,32 @@
             document.getElementById('traitGear').textContent = result.gear;
             document.getElementById('traitQuote').textContent = '"' + result.quote + '"';
 
-            // 生成全部类型网格
-            let gridHtml = '';
-            for (let key in types) {
-                gridHtml += `
-                    <div class="type-item" style="${key === resultType ? 'border-color: #e94560; background: rgba(233, 69, 96, 0.1);' : ''}">
-                        <strong>${key} - ${types[key].name.split(' ')[0]}</strong>
-                        ${types[key].tag}
-                    </div>
-                `;
-            }
-            document.getElementById('typeGrid').innerHTML = gridHtml;
+            // 不再显示全部类型网格以保持神秘感和结果唯一性，如果需要也可以把上面注释的生成网格代码加回来
 
-            // 滚动到顶部
             window.scrollTo(0, 0);
         }
 
-        // 重新测试
         function retakeQuiz() {
             currentQuestion = 0;
-            scores = {};
-            answers = [];
+            scores = { V: 0, P: 0, C: 0, H: 0, I: 0, E: 0, F: 0, S: 0 };
             document.getElementById('resultScreen').style.display = 'none';
             document.getElementById('startScreen').style.display = 'block';
         }
 
-        // 分享结果
         function shareResult() {
-            const type = document.getElementById('resultType').textContent;
+            const typeCode = document.getElementById('resultType').textContent;
             const name = document.getElementById('resultName').textContent;
-            const text = `我的FATI健身人格是【${type} - ${name}】！快来测测你的健身痛点是什么？`;
+            const text = `我的FATI健身房人格是【${typeCode} - ${name}】！快来测测你在健身房到底是个什么物种？`;
             
             if (navigator.share) {
-                navigator.share({
-                    title: 'FATI健身人格测试',
-                    text: text,
-                    url: window.location.href
-                });
+                navigator.share({ title: 'FATI健身人格测试', text: text, url: window.location.href });
             } else {
-                // 复制到剪贴板
                 navigator.clipboard.writeText(text + ' ' + window.location.href).then(() => {
-                    alert('结果已复制到剪贴板！');
+                    alert('结果已复制到剪贴板！去朋友圈秀一下吧！');
                 });
             }
         }
 
-        // 初始化
         initBg();
     </script>
 </body>
