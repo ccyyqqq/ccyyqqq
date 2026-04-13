@@ -5,24 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FATI 健身人格测试 | 为远离FAT而战</title>
     <style>
-        /* 样式保持原样，未做修改 */
+        /* 基础样式 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; overflow-x: hidden; }
         .container { max-width: 800px; margin: 0 auto; padding: 20px; position: relative; }
         .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.1; }
         .dumbbell { position: absolute; font-size: 40px; animation: float 8s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-30px) rotate(10deg); opacity: 0.6; } }
-        header { text-align: center; padding: 40px 20px; position: relative; z-index: 1; }
+        
+        /* 头部样式 */
+        header { text-align: center; padding: 40px 20px 20px; position: relative; z-index: 1; }
         .logo { font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, #e94560, #ff6b6b, #feca57); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(233, 69, 96, 0.5); letter-spacing: -2px; margin-bottom: 10px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .subtitle { color: #a0a0a0; font-size: 1.1rem; margin-top: 10px; }
         .tagline { background: rgba(233, 69, 96, 0.2); border: 1px solid rgba(233, 69, 96, 0.5); padding: 10px 20px; border-radius: 50px; display: inline-block; margin-top: 20px; font-size: 0.9rem; color: #ff6b6b; }
-        .start-screen { text-align: center; padding: 40px 20px; position: relative; z-index: 1; }
-        .intro { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; margin: 30px 0; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .intro p { line-height: 1.8; color: #d0d0d0; margin-bottom: 15px; }
-        .btn-primary { background: linear-gradient(45deg, #e94560, #ff6b6b); color: white; border: none; padding: 18px 50px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4); font-weight: 700; margin-top: 20px; }
+        
+        /* 按钮与通用卡片 */
+        .btn-primary { background: linear-gradient(45deg, #e94560, #ff6b6b); color: white; border: none; padding: 18px 50px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4); font-weight: 700; margin-top: 20px; width: 100%; max-width: 300px;}
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(233, 69, 96, 0.6); }
         .btn-primary:active { transform: translateY(0); }
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 首页解读区 */
+        .start-screen { text-align: center; padding: 0 20px 40px; position: relative; z-index: 1; }
+        .intro { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; margin: 20px 0; border: 1px solid rgba(255, 255, 255, 0.1); text-align: left;}
+        .intro p { line-height: 1.8; color: #d0d0d0; margin-bottom: 15px; text-align: center;}
+        .dimension-intro { margin-top: 25px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 20px; }
+        .dim-item { margin-bottom: 12px; font-size: 0.9rem; color: #bbb; line-height: 1.6; }
+        .dim-item strong { color: #feca57; font-size: 1rem; }
+
+        /* 答题区 */
         .quiz-screen { display: none; position: relative; z-index: 1; }
         .progress-bar { background: rgba(255, 255, 255, 0.1); height: 8px; border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
         .progress-fill { background: linear-gradient(90deg, #e94560, #feca57); height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 10px; }
@@ -35,28 +48,33 @@
         .option.selected { background: rgba(233, 69, 96, 0.2); border-color: #e94560; }
         .option-letter { background: rgba(233, 69, 96, 0.3); color: #ff6b6b; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
         .option-text { color: #e0e0e0; line-height: 1.5; }
+
+        /* 结果区 */
         .result-screen { display: none; position: relative; z-index: 1; text-align: center; }
         .result-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 30px; padding: 40px 30px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; position: relative; overflow: hidden; }
-        .result-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(233, 69, 96, 0.3) 0%, transparent 70%); opacity: 0.5; pointer-events: none; }
-        .result-type { font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, #e94560, #feca57); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; position: relative; letter-spacing: 2px; }
-        .result-name { font-size: 1.5rem; color: #fff; margin-bottom: 20px; position: relative; }
-        .result-tag { background: rgba(233, 69, 96, 0.3); color: #ff6b6b; padding: 8px 20px; border-radius: 50px; display: inline-block; font-size: 0.9rem; margin-bottom: 25px; position: relative; }
-        .result-desc { color: #d0d0d0; line-height: 1.8; font-size: 1.1rem; margin-bottom: 30px; position: relative; }
-        .traits { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; position: relative; }
+        .result-type { font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, #e94560, #feca57); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; letter-spacing: 2px; }
+        .result-name { font-size: 1.6rem; color: #fff; margin-bottom: 15px; font-weight: bold; }
+        .result-tag { background: rgba(233, 69, 96, 0.3); color: #ff6b6b; padding: 8px 20px; border-radius: 50px; display: inline-block; font-size: 0.9rem; margin-bottom: 25px; }
+        .result-desc { color: #d0d0d0; line-height: 1.8; font-size: 1.1rem; margin-bottom: 25px; text-align: left; }
+        
+        /* 字母拆解区 (新加) */
+        .letter-breakdown { background: rgba(0, 0, 0, 0.2); border-radius: 15px; padding: 20px; margin-bottom: 30px; text-align: left; }
+        .letter-row { display: flex; margin-bottom: 12px; align-items: flex-start; }
+        .letter-row:last-child { margin-bottom: 0; }
+        .letter-char { font-size: 1.5rem; font-weight: 900; color: #feca57; width: 35px; flex-shrink: 0; line-height: 1.2;}
+        .letter-text { font-size: 0.95rem; color: #ccc; line-height: 1.5; }
+
+        /* 特质区 */
+        .traits { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; }
         .trait { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px; text-align: left; }
         .trait-label { color: #888; font-size: 0.8rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .trait-value { color: #fff; font-weight: 600; }
-        .share-section { margin-top: 30px; position: relative; }
+        .trait-value { color: #fff; font-weight: 600; font-size: 0.95rem;}
+
+        .share-section { margin-top: 30px; }
         .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255, 255, 255, 0.3); padding: 12px 30px; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: all 0.3s; margin: 5px; }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.5); }
-        .all-types { margin-top: 40px; text-align: left; }
-        .all-types h3 { text-align: center; margin-bottom: 20px; color: #a0a0a0; }
-        .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .type-item { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.9rem; }
-        .type-item strong { color: #e94560; display: block; margin-bottom: 5px; }
-        .fade-in { animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 600px) { .logo { font-size: 3rem; } .result-type { font-size: 3rem; } .traits { grid-template-columns: 1fr; } .type-grid { grid-template-columns: 1fr; } }
+
+        @media (max-width: 600px) { .logo { font-size: 3rem; } .result-type { font-size: 3rem; } .traits { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -65,20 +83,26 @@
         <header>
             <h1 class="logo">FATI</h1>
             <p class="subtitle">Fitness Attitude Type Indicator</p>
-            <div class="tagline">🏋️ 测测你的健身房隐藏人格</div>
+            <div class="tagline">🏋️ 测测你的健身房隐藏人格，为远离FAT而战</div>
         </header>
 
+        <!-- 首页 -->
         <div class="start-screen" id="startScreen">
             <div class="intro fade-in">
                 <p>原以为大家都在挥汗如雨，其实有人在照镜子，有人在发呆。</p>
-                <p>办卡三年，你的真实归宿到底是器械区还是淋浴间？</p>
-                <br>
-                <p><strong>FATI 测试</strong>基于四大核心健身维度，</p>
-                <p>为你揭秘：<strong>你在健身房到底是个什么物种？</strong></p>
+                <p><strong>办卡三年，你的真实归宿到底是器械区还是淋浴间？</strong></p>
+                
+                <div class="dimension-intro">
+                    <div class="dim-item"><strong>👁️ V/P 驱动力：</strong>你是Visual(颜值出片党) 还是 Performance(无情推铁机)？</div>
+                    <div class="dim-item"><strong>💦 C/H 态 度：</strong>你是Casual(佛系划水党) 还是 Hardcore(轻伤不下火线)？</div>
+                    <div class="dim-item"><strong>🤐 I/E 社 交：</strong>你是Introvert(戴耳机杀手) 还是 Extrovert(全场交际花)？</div>
+                    <div class="dim-item"><strong>🧪 F/S 流 派：</strong>你是Feel(野路子瞎练) 还是 Science(算数据魔怔人)？</div>
+                </div>
             </div>
             <button class="btn-primary" onclick="startQuiz()">开始测试 💪</button>
         </div>
 
+        <!-- 答题页 -->
         <div class="quiz-screen" id="quizScreen">
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -86,12 +110,20 @@
             <div class="question-card" id="questionCard"></div>
         </div>
 
+        <!-- 结果页 -->
         <div class="result-screen" id="resultScreen">
             <div class="result-card fade-in">
                 <div class="result-type" id="resultType">VCIF</div>
                 <div class="result-name" id="resultName">躺平洗澡党</div>
                 <div class="result-tag" id="resultTag">办卡=洗浴中心VIP</div>
+                
+                <!-- 新增：毒舌字母拆解区 -->
+                <div class="letter-breakdown" id="letterBreakdown">
+                    <!-- 动态注入 -->
+                </div>
+
                 <div class="result-desc" id="resultDesc"></div>
+                
                 <div class="traits">
                     <div class="trait">
                         <div class="trait-label">核心优势</div>
@@ -112,126 +144,59 @@
                 </div>
                 <div class="share-section">
                     <button class="btn-secondary" onclick="retakeQuiz()">再测一次 🔄</button>
-                    <button class="btn-secondary" onclick="shareResult()">分享结果 📤</button>
+                    <button class="btn-primary" style="margin-top:0;" onclick="shareResult()">分享处刑结果 📤</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 真正仿MBTI的四维逻辑题目
+        // 毒舌题目库
         const questions = [
-            // Dimension 1: 驱动力 - V(Visual 颜值/出片) vs P(Performance 力量/表现)
-            {
-                text: "办卡交钱的那一刻，你脑海里浮现的画面是？",
-                options: [
-                    { letter: "A", text: "穿衣显瘦，脱衣有肉，制霸朋友圈", type: "V" },
-                    { letter: "B", text: "一拳打死一头牛，或者跑马不喘气", type: "P" }
-                ]
-            },
-            {
-                text: "如果体重秤上突然轻了1公斤，你的第一反应：",
-                options: [
-                    { letter: "A", text: "赶紧撩起衣服照镜子，看腹肌出来没", type: "V" },
-                    { letter: "B", text: "完了！是不是掉肌肉了？今天的深蹲还能起吗？", type: "P" }
-                ]
-            },
-            {
-                text: "关注健身博主主要看什么？",
-                options: [
-                    { letter: "A", text: "好看的穿搭、美好的肉体、日常出片", type: "V" },
-                    { letter: "B", text: "硬拉发力技巧、训练容量、心肺强化计划", type: "P" }
-                ]
-            },
-            
-            // Dimension 2: 态度 - C(Casual 佛系/划水) vs H(Hardcore 硬核/死磕)
-            {
-                text: "到了健身房发现没带运动鞋，你会？",
-                options: [
-                    { letter: "A", text: "天意不可违！完美借口，洗个澡回家", type: "C" },
-                    { letter: "B", text: "借一双、现场买一双，或者光脚干硬拉", type: "H" }
-                ]
-            },
-            {
-                text: "所谓的“最后一组”，对你来说真实情况是？",
-                options: [
-                    { letter: "A", text: "心里已经放弃，随便敷衍两下收工", type: "C" },
-                    { letter: "B", text: "表情面目全非，借力扭曲也要怼上去", type: "H" }
-                ]
-            },
-            {
-                text: "今天感觉肌肉有点隐隐作痛，你会？",
-                options: [
-                    { letter: "A", text: "太危险了，歇个三天压压惊", type: "C" },
-                    { letter: "B", text: "享受这种撕裂感，轻伤不下火线，换个部位继续练", type: "H" }
-                ]
-            },
-
-            // Dimension 3: 社交 - I(Introvert 社恐/孤狼) vs E(Extrovert 社牛/交际)
-            {
-                text: "组间休息漫长的3分钟，你在干嘛？",
-                options: [
-                    { letter: "A", text: "戴着降噪耳机，眼神杀气腾腾，生怕被打扰", type: "I" },
-                    { letter: "B", text: "已经和旁边的肌霸/小姐姐聊上了今天的补剂行情", type: "E" }
-                ]
-            },
-            {
-                text: "看到有人占着器械玩手机十分钟，你会？",
-                options: [
-                    { letter: "A", text: "默默绕开去练别的，在心里疯狂鄙视", type: "I" },
-                    { letter: "B", text: "直接走上前拍肩：'兄弟还有几组？我能加个塞吗？'", type: "E" }
-                ]
-            },
-            {
-                text: "走进健身房的一路，你的状态是？",
-                options: [
-                    { letter: "A", text: "躲开前台和教练的视线，像个刺客一样潜入", type: "I" },
-                    { letter: "B", text: "和前台、保洁、教练、熟人挨个点头打招呼", type: "E" }
-                ]
-            },
-
-            // Dimension 4: 方法 - F(Feel 凭直觉/野路子) vs S(Science 算数据/装备控)
-            {
-                text: "你的健身包里通常装了什么？",
-                options: [
-                    { letter: "A", text: "啥也不带，一瓶水一部手机走天下", type: "F" },
-                    { letter: "B", text: "腰带护腕筋膜枪，像去荒野求生啥都有", type: "S" }
-                ]
-            },
-            {
-                text: "练完之后的饮食，你通常怎么解决？",
-                options: [
-                    { letter: "A", text: "练都练了，吃顿好的怎么了？烧烤火锅走起", type: "F" },
-                    { letter: "B", text: "精确计算碳水和蛋白质比例，坚决不碰隐形糖", type: "S" }
-                ]
-            },
-            {
-                text: "关于运动补剂，你的态度是？",
-                options: [
-                    { letter: "A", text: "都是智商税，多吃俩鸡蛋就补回来了", type: "F" },
-                    { letter: "B", text: "氮泵、肌酸、乳清蛋白缺一不可，讲究窗口期", type: "S" }
-                ]
-            }
+            { text: "办卡交钱的那一刻，你脑海里浮现的画面是？", options: [ { letter: "A", text: "穿衣显瘦，脱衣有肉，制霸朋友圈", type: "V" }, { letter: "B", text: "一拳打死一头牛，或者跑马不喘气", type: "P" } ] },
+            { text: "如果体重秤上突然轻了1公斤，你的第一反应：", options: [ { letter: "A", text: "赶紧撩起衣服照镜子，看腹肌出来没", type: "V" }, { letter: "B", text: "完了！是不是掉肌肉了？今天的深蹲还能起吗？", type: "P" } ] },
+            { text: "关注健身博主主要看什么？", options: [ { letter: "A", text: "好看的穿搭、美好的肉体、日常出片", type: "V" }, { letter: "B", text: "硬拉发力技巧、训练容量、心肺强化计划", type: "P" } ] },
+            { text: "到了健身房发现没带运动鞋，你会？", options: [ { letter: "A", text: "天意不可违！完美借口，洗个澡回家", type: "C" }, { letter: "B", text: "借一双、现场买一双，或者光脚干硬拉", type: "H" } ] },
+            { text: "所谓的“最后一组”，对你来说真实情况是？", options: [ { letter: "A", text: "心里已经放弃，随便敷衍两下收工", type: "C" }, { letter: "B", text: "表情面目全非，借力扭曲也要怼上去", type: "H" } ] },
+            { text: "今天感觉肌肉有点隐隐作痛，你会？", options: [ { letter: "A", text: "太危险了，歇个三天压压惊", type: "C" }, { letter: "B", text: "享受这种撕裂感，轻伤不下火线，换个部位继续练", type: "H" } ] },
+            { text: "组间休息漫长的3分钟，你在干嘛？", options: [ { letter: "A", text: "戴着降噪耳机，眼神杀气腾腾，生怕被打扰", type: "I" }, { letter: "B", text: "已经和旁边的肌霸/小姐姐聊上了今天的补剂行情", type: "E" } ] },
+            { text: "看到有人占着器械玩手机十分钟，你会？", options: [ { letter: "A", text: "默默绕开去练别的，在心里疯狂鄙视", type: "I" }, { letter: "B", text: "直接走上前拍肩：'兄弟还有几组？我能加个塞吗？'", type: "E" } ] },
+            { text: "走进健身房的一路，你的状态是？", options: [ { letter: "A", text: "躲开前台和教练的视线，像个刺客一样潜入", type: "I" }, { letter: "B", text: "和前台、保洁、教练、熟人挨个点头打招呼", type: "E" } ] },
+            { text: "你的健身包里通常装了什么？", options: [ { letter: "A", text: "啥也不带，一瓶水一部手机走天下", type: "F" }, { letter: "B", text: "腰带护腕筋膜枪，像去荒野求生啥都有", type: "S" } ] },
+            { text: "练完之后的饮食，你通常怎么解决？", options: [ { letter: "A", text: "练都练了，吃顿好的怎么了？烧烤火锅走起", type: "F" }, { letter: "B", text: "精确计算碳水和蛋白质比例，坚决不碰隐形糖", type: "S" } ] },
+            { text: "关于运动补剂，你的态度是？", options: [ { letter: "A", text: "都是智商税，多吃俩鸡蛋就补回来了", type: "F" }, { letter: "B", text: "氮泵、肌酸、乳清蛋白缺一不可，讲究窗口期", type: "S" } ] }
         ];
 
-        // 16种极致人格库 (MBTI-style)
+        // 16种极端人格库
         const types = {
             "VCIF": { name: "躺平洗澡党", tag: "办卡 = 洗浴中心VIP", desc: "你的健身之旅从刷脸进门就完成了90%。你熟悉淋浴间的水温和休息区的沙发，唯独对器械区十分陌生。", strength: "体力保全大师", weakness: "练了三年还是新手", gear: "超大容量水杯+高档沐浴露", quote: "今天出汗了，洗个头吧。" },
             "VCEF": { name: "镜前永动机", tag: "训练5分钟，自拍2小时", desc: "灯光是你的第一教练，角度是你的最佳辅助。你深谙'光线增肌法'，只要滤镜调得好，相当于多练三个月。", strength: "极强的出片运镜能力", weakness: "一脱离顶光就现原形", gear: "手机三脚架", quote: "光练不拍等于白练。" },
-            "VCIS": { name: "差生文具多", tag: "顶级装备，划水训练", desc: "你穿着最新款的Lululemon，戴着心率表，穿着举重鞋，在跑步机上慢走了20分钟。态度很专业，流汗很敷衍。", strength: "健身房潮流引领者", weakness: "训练痕迹几乎没有", gear: "Oura戒指/全套名牌穿搭", quote: "工欲善其事，必先买装备。" },
+            "VCIS": { name: "差生文具多", tag: "顶级装备，划水训练", desc: "你穿着最新款的Lululemon，戴着心率表，穿着举重鞋，在跑步机上慢走了20分钟。态度很专业，流汗很敷衍。", strength: "健身房潮流引领者", weakness: "训练痕迹几乎没有", gear: "全套名牌穿搭", quote: "工欲善其事，必先买装备。" },
             "VCES": { name: "团课气氛组", tag: "主打一个陪伴", desc: "你是动感单车和Zumba课的核心灵魂。哪里人多你就去哪，动作标不标准不重要，尖叫声必须最大。", strength: "无敌的社交感染力", weakness: "一个人绝对不练", gear: "荧光色运动服", quote: "教练，再来一首DJ！" },
             "VHIF": { name: "饿狼传说", tag: "碳水克星，孤傲野狼", desc: "为了腹肌可以六亲不认。你训练极度刻苦，对自己心狠手辣。不爱交流，只和铁块死磕，且吃得像个原始人。", strength: "惊人的自律与执行力", weakness: "聚餐绝缘体，容易抑郁", gear: "掉色的旧水壶", quote: "吃一口糖，腹肌就糊了。" },
             "VHEF": { name: "组间小陀螺", tag: "全场巡游，随时充血", desc: "做完一组动作必须立刻站起来走动，时不时撩起衣服看看腹肌。精力旺盛，全场都是你的走秀T台。", strength: "训练密度极高", weakness: "过度在意他人眼光", gear: "紧身速干衣", quote: "兄弟，看我刚才泵感怎么样？" },
             "VHIS": { name: "腹肌偏执狂", tag: "严格控卡，冷酷无情", desc: "你的世界里只有体脂率。厨房秤是你的神，一切食物数据化。你在健身房像个没有感情的减脂机器。", strength: "饮食控制到达病态级别", weakness: "容易被一口蛋糕破防", gear: "随身厨房秤", quote: "这口饭超了2克碳水。" },
-            "VHES": { name: "宏量营养算命师", tag: "行走的生酮布道者", desc: "你不仅自己严格练，还要到处指点别人怎么吃。逢人便聊碳水循环和间歇性断食，像极了传教士。", strength: "理论知识极其丰富", weakness: "让身边的人压力山大", gear: "透明摇摇杯(装满奇特补剂)", quote: "你这顿的GI值太高了。" },
+            "VHES": { name: "宏量营养算命师", tag: "行走的生酮布道者", desc: "你不仅自己严格练，还要到处指点别人怎么吃。逢人便聊碳水循环和间歇性断食，像极了传教士。", strength: "理论知识极其丰富", weakness: "让身边的人压力山大", gear: "装满奇特补剂的摇摇杯", quote: "你这顿的GI值太高了。" },
             "PCIF": { name: "有氧囚徒", tag: "跑步机上的苦行僧", desc: "力量区是你的禁区。你对跑步机有莫名的安全感，只要跑得够久，生活的烦恼就追不上你。永远在追剧。", strength: "可怕的心肺耐力", weakness: "毫无肌肉线条", gear: "降噪耳机+iPad", quote: "今天就跑个半马放松下吧。" },
             "PCEF": { name: "健身房街溜子", tag: "指点江山，从不流汗", desc: "健身房的超级VIP（闲散版）。什么器械都摸两下，遇到谁都能聊半小时。来健身主要是为了消磨时间。", strength: "掌握全健身房八卦", weakness: "进步基本靠做梦", gear: "不知道在哪拿的毛巾", quote: "哥们，你这发力不对啊。" },
             "PCIS": { name: "康复理疗大师", tag: "热身一小时，训练十分钟", desc: "你在泡沫轴上打滚的时间，比别人全套训练还长。筋膜放松、关节激活动作信手拈来，主打一个养生。", strength: "柔韧性满分，绝不受伤", weakness: "根本没受到实质训练刺激", gear: "狼牙棒泡沫轴", quote: "我核心还没激活完毕。" },
             "PCES": { name: "野生老中医", tag: "专治各种动作变形", desc: "自己没多少肉，但极爱到处指导新手。从解剖学讲到生物力学，满嘴大词，但就是不见自己去推大重量。", strength: "理论巨无霸", weakness: "实操战五渣", gear: "解剖学电子书", quote: "你刚才那个肩胛骨没收紧。" },
             "PHIF": { name: "伤病收藏家", tag: "带伤上阵，硬核到底", desc: "膝盖弹响、腰椎突出、肩膀咔咔作响，但你从不休息。“休息是弱者的选择”，你是个真正的狠人（瞎练版）。", strength: "意志力如钢铁般坚硬", weakness: "身体像玻璃一样易碎", gear: "各种肌贴、膏药", quote: "轻伤不下火线，干就完了。" },
-            "PHEF": { name: "嚎叫艺术家", tag: "声音越大，重量越假", desc: "不管重量多轻，你的吼叫声必须响彻全场。每次最后一下都像是要把灵魂逼出体外，力竭表演登峰造极。", strength: "强大的精神氮泵", weakness: "容易吓到场内的小姐姐", gear: "镁粉 (尽管健身房不让用)", quote: "啊啊啊啊！再来一个！" },
-            "PHIS": { name: "孤独打桩机", tag: "耳机一戴，谁也不爱", desc: "硬拉、深蹲、卧推，你只认三大项。推着比自己重两倍的铁，戴着耳机与世隔绝，散发着生人勿近的气场。", strength: "恐怖的绝对力量", weakness: "可能看起来不太好惹", gear: "牛皮举重腰带+硬拉鞋", quote: "......(不说话，专注喘气)" },
+            "PHEF": { name: "嚎叫艺术家", tag: "声音越大，重量越假", desc: "不管重量多轻，你的吼叫声必须响彻全场。每次最后一下都像是要把灵魂逼出体外，力竭表演登峰造极。", strength: "强大的精神氮泵", weakness: "容易吓到场内的小姐姐", gear: "一双手套", quote: "啊啊啊啊！再来一个！" },
+            "PHIS": { name: "孤独打桩机", tag: "耳机一戴，谁也不爱", desc: "硬拉、深蹲、卧推，你只认三大项。推着比自己重两倍的铁，戴着耳机与世隔绝，散发着生人勿近的气场。", strength: "恐怖的绝对力量", weakness: "可能看起来不太好惹", gear: "牛皮举重腰带", quote: "......(不说话，专注喘气)" },
             "PHES": { name: "科技魔怔人", tag: "满嘴术语，科学死磕", desc: "把健身当成了搞科研。训练卡着秒表，重量精确到小数点，补剂按克称。你是真正的“肌肉极客”。", strength: "最高效的肌肉生长模型", weakness: "偶尔显得过于神经质", gear: "秒表+厚厚的训练笔记", quote: "现在是蛋白质吸收的最佳窗口期。" }
+        };
+
+        // 毒舌单字母解释库 (新加)
+        const letterDict = {
+            "V": "【Visual 颜值驱动】照镜子时间大于举铁，肌肉只是你朋友圈的物理滤镜。",
+            "P": "【Performance 表现驱动】不求长得好看，只求力大如牛，毫无美感可言的推铁机器。",
+            "C": "【Casual 佛系划水】主打一个陪伴，只要出汗就算成功，哪怕出的是洗澡水。",
+            "H": "【Hardcore 硬核死磕】只要没进ICU就往死里练，重伤也要坐着推胸的狠人。",
+            "I": "【Introvert 社恐孤狼】耳机是本体，眼神能无情杀退所有试图搭讪和拼组的人。",
+            "E": "【Extrovert 社牛交际】健身房居委会主任，练5分钟聊半小时，掌握全场八卦。",
+            "F": "【Feel 野路子直觉】不看计划不看心率，今天练啥全看哪个器械刚好没人用。",
+            "S": "【Science 科学魔怔】差生文具多，算卡路里走火入魔，少喝一口粉仿佛当场掉肌肉。"
         };
 
         let currentQuestion = 0;
@@ -285,7 +250,6 @@
         function selectOption(type, element) {
             document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
-
             scores[type]++;
 
             setTimeout(() => {
@@ -302,7 +266,6 @@
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'block';
 
-            // 计算四维结果
             let typeCode = "";
             typeCode += (scores.V >= scores.P) ? "V" : "P";
             typeCode += (scores.C >= scores.H) ? "C" : "H";
@@ -315,12 +278,24 @@
             document.getElementById('resultName').textContent = result.name;
             document.getElementById('resultTag').textContent = result.tag;
             document.getElementById('resultDesc').innerHTML = result.desc;
+            
+            // 动态生成毒舌字母解释
+            let breakdownHtml = "";
+            for(let i=0; i<typeCode.length; i++){
+                let char = typeCode[i];
+                breakdownHtml += `
+                    <div class="letter-row">
+                        <div class="letter-char">${char}</div>
+                        <div class="letter-text">${letterDict[char]}</div>
+                    </div>
+                `;
+            }
+            document.getElementById('letterBreakdown').innerHTML = breakdownHtml;
+
             document.getElementById('traitStrength').textContent = result.strength;
             document.getElementById('traitWeakness').textContent = result.weakness;
             document.getElementById('traitGear').textContent = result.gear;
             document.getElementById('traitQuote').textContent = '"' + result.quote + '"';
-
-            // 不再显示全部类型网格以保持神秘感和结果唯一性，如果需要也可以把上面注释的生成网格代码加回来
 
             window.scrollTo(0, 0);
         }
@@ -341,7 +316,7 @@
                 navigator.share({ title: 'FATI健身人格测试', text: text, url: window.location.href });
             } else {
                 navigator.clipboard.writeText(text + ' ' + window.location.href).then(() => {
-                    alert('结果已复制到剪贴板！去朋友圈秀一下吧！');
+                    alert('结果已复制到剪贴板！去朋友圈秀（处）一（刑）下自己吧！');
                 });
             }
         }
